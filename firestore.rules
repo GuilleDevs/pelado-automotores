@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function esAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    match /vehiculos/{id} {
+      // Las reglas no filtran queries: toda lectura pública debe incluir
+      // where('publicado','==',true) o la query falla entera.
+      allow read: if resource.data.publicado == true || esAdmin();
+      allow create, update, delete: if esAdmin();
+    }
+
+    match /sucursales/{id} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    match /leads/{id} {
+      // El alta pasa por la Pages Function con service account, nunca desde el cliente.
+      allow read, update, delete: if esAdmin();
+      allow create: if false;
+    }
+
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;  // solo desde la consola de Firebase
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

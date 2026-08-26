@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { background: #0A0A0A; }
+  body {
+    margin: 0;
+    background: #0A0A0A;
+    color: #fff;
+    font-family: Archivo, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #46E02D; text-decoration: none; }
+  a:hover { color: #7BF25F; }
+  ::selection { background: #46E02D; color: #0A0A0A; }
+  *:focus-visible { outline: 2px solid #46E02D; outline-offset: 2px; }
+  select option { background: #141414; color: #fff; }
+}
+
+@layer components {
+  /* Titular: Archivo Narrow 700, mayúsculas, radio 0, alineado a la izquierda. */
+  .titulo { @apply font-display font-bold uppercase leading-none tracking-[0.01em] text-blanco; }
+  .kicker { @apply text-[11px] font-bold uppercase tracking-[0.3em] text-verde; }
+  .label-campo { @apply text-[10px] font-bold uppercase tracking-[0.18em] text-txt-4; }
+  .input {
+    @apply w-full bg-negro text-blanco border border-borde px-3 py-3 text-sm;
+    min-height: 44px;
+  }
+  .btn {
+    @apply inline-flex items-center text-left text-xs font-bold uppercase tracking-[0.12em] px-5 py-4;
+    min-height: 44px;
+  }
+  .btn-verde { @apply btn bg-verde text-negro hover:bg-verde-hover; }
+  .btn-blanco { @apply btn bg-blanco text-negro hover:bg-verde; }
+  .btn-linea { @apply btn border-2 border-blanco text-blanco hover:border-verde hover:text-verde; }
+  .divisor { @apply border-b-2 border-borde; }
+  /* Los mapas embebidos entran en el esquema oscuro con esta inversión. */
+  .mapa-oscuro { filter: grayscale(1) invert(0.92) hue-rotate(180deg); }
+}
