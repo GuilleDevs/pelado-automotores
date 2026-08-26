@@ -99,36 +99,53 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return json({ error: 'El mensaje es demasiado largo' }, 400);
   }
 
-  const ip = request.headers.get('CF-Connecting-IP') ?? '';
-  const ok = await verificarTurnstile(cuerpo.turnstileToken ?? '', env.TURNSTILE_SECRET_KEY, ip);
-  if (!ok) return json({ error: 'No pudimos verificar que no seas un robot. Probá de nuevo.' }, 403);
+  // Turnstile protege el endpoint solo si está configurado, la misma condición que usa
+  // el widget en el cliente. Con el secret ausente, siteverify siempre falla y el
+  // formulario queda inutilizable: rechazar consultas reales es peor que aceptarlas.
+  // El warning deja rastro en los logs de Pages de que el endpoint quedó sin protección.
+  if (env.TURNSTILE_SECRET_KEY) {
+    const ip = request.headers.get('CF-Connecting-IP') ?? '';
+    const ok = await verificarTurnstile(cuerpo.turnstileToken ?? '', env.TURNSTILE_SECRET_KEY, ip);
+    if (!ok) return json({ error: 'No pudimos verificar que no seas un robot. Probá de nuevo.' }, 403);
+  } else {
+    console.warn('[contacto] TURNSTILE_SECRET_KEY sin configurar: la consulta se acepta sin verificar y el endpoint queda expuesto a spam.');
+  }
 
-  const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
-  const token = await accessToken(sa);
-  const proyecto = env.FIREBASE_PROJECT_ID || sa.project_id;
+  // Todo lo que toca Firestore va dentro del try: credenciales ausentes o mal formadas,
+  // token rechazado o red caída tiraban una excepción sin capturar, y el visitante
+  // recibía un 500 opaco con la consulta perdida. Sale por el mismo 502 que ya usaba
+  // el fetch, que al menos lo manda a WhatsApp.
+  try {
+    const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+    const token = await accessToken(sa);
+    const proyecto = env.FIREBASE_PROJECT_ID || sa.project_id;
 
-  const doc = {
-    fields: {
-      nombre: { stringValue: nombre },
-      telefono: { stringValue: telefono },
-      mensaje: { stringValue: mensaje },
-      vehiculoId: cuerpo.vehiculoId ? { stringValue: cuerpo.vehiculoId } : { nullValue: null },
-      vehiculoTitulo: cuerpo.vehiculoTitulo ? { stringValue: cuerpo.vehiculoTitulo } : { nullValue: null },
-      origen: { stringValue: cuerpo.origen === 'ficha' ? 'ficha' : 'contacto' },
-      leido: { booleanValue: false },
-      creadoEn: { timestampValue: new Date().toISOString() },
-    },
-  };
+    const doc = {
+      fields: {
+        nombre: { stringValue: nombre },
+        telefono: { stringValue: telefono },
+        mensaje: { stringValue: mensaje },
+        vehiculoId: cuerpo.vehiculoId ? { stringValue: cuerpo.vehiculoId } : { nullValue: null },
+        vehiculoTitulo: cuerpo.vehiculoTitulo ? { stringValue: cuerpo.vehiculoTitulo } : { nullValue: null },
+        origen: { stringValue: cuerpo.origen === 'ficha' ? 'ficha' : 'contacto' },
+        leido: { booleanValue: false },
+        creadoEn: { timestampValue: new Date().toISOString() },
+      },
+    };
 
-  const r = await fetch(
-    `https://firestore.googleapis.com/v1/projects/${proyecto}/databases/(default)/documents/leads`,
-    {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(doc),
-    },
-  );
+    const r = await fetch(
+      `https://firestore.googleapis.com/v1/projects/${proyecto}/databases/(default)/documents/leads`,
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(doc),
+      },
+    );
 
-  if (!r.ok) return json({ error: 'No pudimos guardar la consulta. Escribinos por WhatsApp.' }, 502);
-  return json({ ok: true }, 201);
+    if (!r.ok) return json({ error: 'No pudimos guardar la consulta. Escribinos por WhatsApp.' }, 502);
+    return json({ ok: true }, 201);
+  } catch (e) {
+    console.error('[contacto] no se pudo guardar el lead:', e);
+    return json({ error: 'No pudimos guardar la consulta. Escribinos por WhatsApp.' }, 502);
+  }
 };
