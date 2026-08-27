@@ -6,7 +6,7 @@ export default function MapaSucursal({ sucursal, alto = 260 }: { sucursal: Sucur
       title={`Mapa de la sucursal ${sucursal.nombre}`}
       src={`https://www.google.com/maps?q=${encodeURIComponent(sucursal.mapaQuery)}&output=embed`}
       loading="lazy"
-      className="w-full border-0 mapa-oscuro"
+      className="w-full border-0"
       style={{ height: alto }}
     />
   );
