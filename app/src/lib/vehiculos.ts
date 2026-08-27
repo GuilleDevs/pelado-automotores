@@ -26,7 +26,9 @@ export async function listarTodos(): Promise<Vehiculo[]> {
 }
 
 export async function porSlug(slug: string): Promise<Vehiculo | null> {
-  const snap = await getDocs(query(col, where('slug', '==', slug), limit(1)));
+  const snap = await getDocs(
+    query(col, where('publicado', '==', true), where('slug', '==', slug), limit(1)),
+  );
   return snap.empty ? null : mapear(snap.docs[0]);
 }
 
