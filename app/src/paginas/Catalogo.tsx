@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import Meta from '../componentes/Meta';
 import FiltrosBar from '../componentes/FiltrosBar';
 import VehiculoCard from '../componentes/VehiculoCard';
-import Cargando from '../componentes/Cargando';
+import EsqueletoTarjetas from '../componentes/EsqueletoTarjetas';
 import { useCatalogo } from '../lib/useCatalogo';
 import { filtrar } from '../lib/vehiculos';
 import { buscarSucursal } from '../lib/sucursales';
@@ -59,7 +59,7 @@ export default function Catalogo() {
         conteo={conteo}
       />
 
-      {cargando && <Cargando />}
+      {cargando && <EsqueletoTarjetas cantidad={6} />}
       {error && <p className="text-txt-2 text-sm">{error}</p>}
 
       {!cargando && resultados.length > 0 && (

@@ -24,7 +24,7 @@ export default function VehiculoCard({ vehiculo: v, sucursal, prioridad }: Props
             width={800}
             height={600}
             loading={prioridad ? 'eager' : 'lazy'}
-            className={`w-full h-full object-cover ${v.estado === 'vendido' ? 'opacity-50' : ''}`}
+            className={`w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100 ${v.estado === 'vendido' ? 'opacity-50' : ''}`}
           />
         ) : (
           <div className="w-full h-full grid place-items-center text-txt-5 text-xs uppercase tracking-[0.14em]">

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Meta from '../componentes/Meta';
 import VehiculoCard from '../componentes/VehiculoCard';
 import MapaSucursal from '../componentes/MapaSucursal';
-import Cargando from '../componentes/Cargando';
+import EsqueletoTarjetas from '../componentes/EsqueletoTarjetas';
 import CarruselHero from '../componentes/CarruselHero';
 import { Campo, Select } from '../componentes/Campo';
 import { useCatalogo } from '../lib/useCatalogo';
@@ -127,7 +127,7 @@ export default function Home() {
           </Link>
         </div>
         {cargando ? (
-          <Cargando />
+          <EsqueletoTarjetas cantidad={4} />
         ) : (
           <div className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(250px,1fr))]">
             {recientes.map((v, i) => (
