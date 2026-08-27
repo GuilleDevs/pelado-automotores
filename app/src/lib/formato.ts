@@ -23,6 +23,25 @@ export const slugify = (s: string) =>
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 /** El slug se genera al crear y no se recalcula al editar: los links ya compartidos siguen sirviendo. */
+/** Marcas que van enteras en mayúsculas: el title case las dejaría como "Bmw". */
+const SIGLAS = new Set(['BMW', 'VW', 'MG', 'DS', 'JAC', 'GMC', 'RAM', 'BYD']);
+
+/**
+ * La marca se agrupa por texto exacto en el filtro, así que "Volkswagen" y
+ * "VOLKSWAGEN" aparecían como dos opciones distintas y cada una escondía los autos
+ * de la otra. Se normaliza al guardar: sin esto, alcanza con que alguien escriba
+ * con otra caja para partir el filtro en dos.
+ */
+export const normalizarMarca = (s: string) =>
+  s.trim().replace(/\s+/g, ' ').split(' ')
+    .map((p) => (SIGLAS.has(p.toUpperCase())
+      ? p.toUpperCase()
+      : p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()))
+    .join(' ');
+
+/** El modelo conserva su caja (GL, SRV, XEI son legítimos), pero no espacios de más. */
+export const normalizarTexto = (s: string) => s.trim().replace(/\s+/g, ' ');
+
 export const armarSlug = (v: Pick<Vehiculo, 'marca' | 'modelo' | 'anio'>, id: string) =>
   `${slugify(v.marca)}-${slugify(v.modelo)}-${v.anio}-${id.slice(0, 4).toLowerCase()}`;
 

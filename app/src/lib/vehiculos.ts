@@ -3,7 +3,7 @@ import {
   query, where, orderBy, limit, serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { armarSlug } from './formato';
+import { armarSlug, normalizarMarca, normalizarTexto } from './formato';
 import type { Filtros, Vehiculo } from './tipos';
 
 const col = collection(db, 'vehiculos');
@@ -37,17 +37,28 @@ export async function porId(id: string): Promise<Vehiculo | null> {
   return d.exists() ? mapear(d as any) : null;
 }
 
+/** Se aplica en las dos escrituras: normalizar solo al crear deja que una edición lo deshaga. */
+const normalizar = <T extends Partial<Vehiculo>>(datos: T): T => ({
+  ...datos,
+  ...(datos.marca === undefined ? {} : { marca: normalizarMarca(datos.marca) }),
+  ...(datos.modelo === undefined ? {} : { modelo: normalizarTexto(datos.modelo) }),
+  ...(datos.color === undefined ? {} : { color: normalizarTexto(datos.color) }),
+});
+
 export async function crear(datos: Omit<Vehiculo, 'id' | 'slug'>): Promise<string> {
+  const limpios = normalizar(datos);
   const ref = await addDoc(col, {
-    ...datos, slug: 'pendiente',
+    ...limpios, slug: 'pendiente',
     creadoEn: serverTimestamp(), actualizadoEn: serverTimestamp(),
   });
-  await updateDoc(ref, { slug: armarSlug(datos, ref.id) });
+  await updateDoc(ref, { slug: armarSlug(limpios, ref.id) });
   return ref.id;
 }
 
 export async function actualizar(id: string, datos: Partial<Vehiculo>) {
-  await updateDoc(doc(db, 'vehiculos', id), { ...datos, actualizadoEn: serverTimestamp() });
+  await updateDoc(doc(db, 'vehiculos', id), {
+    ...normalizar(datos), actualizadoEn: serverTimestamp(),
+  });
 }
 
 export async function eliminar(id: string) {
