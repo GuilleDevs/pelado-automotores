@@ -57,6 +57,8 @@ export default function VehiculoEditar() {
 
   const set = <K extends keyof Borrador>(k: K, v: Borrador[K]) => setDatos((d) => ({ ...d, [k]: v }));
 
+  const sinKilometraje = datos.kilometraje === null;
+
   const guardar = async (publicado: boolean) => {
     setGuardando(true);
     try {
@@ -107,16 +109,30 @@ export default function VehiculoEditar() {
         <Campo label="Motor">
           <input className="input" value={datos.motor} onChange={(e) => set('motor', e.target.value)} placeholder="1.6" />
         </Campo>
-        <Campo label="Kilometraje (opcional)">
+        {/* No usa Campo porque este campo lleva dos controles y Campo los anidaria
+            dentro de una misma etiqueta, que solo puede apuntar a uno. */}
+        <div className="flex flex-col gap-1.5">
+          <label className="label-campo" htmlFor="kilometraje">Kilometraje</label>
           <input
-            className="input"
+            id="kilometraje"
+            className="input disabled:opacity-40"
             type="number"
             min="0"
-            placeholder="Dejar vacío si no se sabe"
+            disabled={sinKilometraje}
+            placeholder={sinKilometraje ? 'Sin datos' : '210000'}
             value={datos.kilometraje ?? ''}
             onChange={(e) => set('kilometraje', e.target.value === '' ? null : Number(e.target.value))}
           />
-        </Campo>
+          <label className="flex gap-2 items-center text-[13px] text-txt-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={sinKilometraje}
+              onChange={(e) => set('kilometraje', e.target.checked ? null : 0)}
+              className="w-4 h-4 accent-verde"
+            />
+            Sin datos: no mostrarlo en la publicación
+          </label>
+        </div>
         <Campo label="Combustible">
           <select className="input" value={datos.combustible} onChange={(e) => set('combustible', e.target.value as Borrador['combustible'])}>
             {COMBUSTIBLES.map((c) => <option key={c} value={c}>{c}</option>)}
