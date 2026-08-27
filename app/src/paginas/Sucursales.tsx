@@ -52,7 +52,10 @@ export default function Sucursales() {
 
       <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
         {sucursales.map((s) => (
-          <div key={s.id} className="border border-borde bg-carta flex flex-col">
+          <div
+            key={s.id}
+            className="border border-borde bg-carta rounded-2xl shadow-carta overflow-hidden flex flex-col"
+          >
             <MapaSucursal sucursal={s} />
             <div className="p-5.5 flex flex-col gap-2.5">
               <span className="titulo text-[26px]">{s.nombre}</span>
@@ -71,7 +74,10 @@ export default function Sucursales() {
         ))}
       </div>
 
-      <form onSubmit={enviar} className="border border-borde bg-negro-2 p-7 flex flex-col gap-4.5">
+      <form
+        onSubmit={enviar}
+        className="border border-borde bg-negro-2 rounded-2xl shadow-carta p-7 flex flex-col gap-4.5"
+      >
         <h2 className="titulo text-[26px] m-0">Dejanos tu consulta</h2>
         <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
           <Campo label="Nombre">

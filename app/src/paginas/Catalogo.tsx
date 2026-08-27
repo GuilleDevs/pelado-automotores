@@ -76,7 +76,7 @@ export default function Catalogo() {
       )}
 
       {!cargando && !error && resultados.length === 0 && (
-        <p className="border border-borde bg-negro-2 p-10 text-center text-txt-3 text-[15px] m-0">
+        <p className="border border-borde bg-negro-2 rounded-2xl p-10 text-center text-txt-3 text-[15px] m-0">
           No hay autos con esos filtros. Escribinos por WhatsApp y lo buscamos para vos.
         </p>
       )}

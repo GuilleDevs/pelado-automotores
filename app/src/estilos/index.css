@@ -24,17 +24,22 @@
   .kicker { @apply text-[11px] font-bold uppercase tracking-[0.3em] text-verde; }
   .label-campo { @apply text-[10px] font-bold uppercase tracking-[0.18em] text-txt-4; }
   .input {
-    @apply w-full bg-negro text-blanco border border-borde px-3 py-3 text-sm;
+    @apply w-full bg-negro text-blanco border border-borde rounded-xl px-4 py-3 text-sm
+      transition-colors duration-150 hover:border-txt-5 focus:border-verde;
     min-height: 44px;
   }
+  /* Píldora: es lo que más aleja al sitio del bloque rectangular. */
   .btn {
-    @apply inline-flex items-center text-left text-xs font-bold uppercase tracking-[0.12em] px-5 py-4;
+    @apply inline-flex items-center justify-center text-center rounded-full text-xs font-bold
+      uppercase tracking-[0.12em] px-6 py-4 transition-all duration-200;
     min-height: 44px;
   }
-  .btn-verde { @apply btn bg-verde text-negro hover:bg-verde-hover; }
+  .btn-verde { @apply btn bg-verde text-negro hover:bg-verde-hover hover:shadow-verde; }
   .btn-blanco { @apply btn bg-blanco text-negro hover:bg-verde; }
-  .btn-linea { @apply btn border-2 border-blanco text-blanco hover:border-verde hover:text-verde; }
-  .divisor { @apply border-b-2 border-borde; }
+  .btn-linea { @apply btn border-2 border-borde text-blanco hover:border-verde hover:text-verde; }
+  /* Superficie estándar: la comparten tarjetas, paneles y bloques de contenido. */
+  .carta-sup { @apply bg-carta border border-borde rounded-2xl shadow-carta; }
+  .divisor { @apply border-b border-borde; }
   /* Los mapas van sin filtro, con los colores propios de Google Maps: es la
      referencia que la gente reconoce al buscar una dirección. */
 }

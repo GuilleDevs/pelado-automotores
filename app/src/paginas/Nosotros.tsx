@@ -34,7 +34,7 @@ export default function Nosotros() {
             pago. La entrega se hace en la sucursal, y sí, la foto con el auto nuevo va a Instagram.
           </p>
         </div>
-        <div className="relative aspect-[3/4] bg-surface border border-borde min-h-[280px]">
+        <div className="relative aspect-[3/4] bg-surface border border-borde rounded-2xl shadow-carta overflow-hidden min-h-[280px]">
           <img
             src="/local.jpg"
             alt="Sucursal de Pelado Automotores en La Consulta"
@@ -44,9 +44,12 @@ export default function Nosotros() {
         </div>
       </div>
 
-      <div className="grid gap-0.5 bg-borde border border-borde [grid-template-columns:repeat(auto-fit,minmax(180px,1fr))]">
+      <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(180px,1fr))]">
         {DATOS.map((d) => (
-          <div key={d.label} className="bg-negro-2 p-6 flex flex-col gap-1.5">
+          <div
+            key={d.label}
+            className="bg-negro-2 border border-borde rounded-2xl p-6 flex flex-col gap-1.5"
+          >
             <span className="font-display font-bold text-[44px] leading-none text-verde">{d.valor}</span>
             <span className="text-xs font-semibold uppercase tracking-[0.14em] text-txt-3">{d.label}</span>
           </div>

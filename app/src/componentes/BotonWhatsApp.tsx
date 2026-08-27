@@ -9,7 +9,7 @@ export default function BotonWhatsApp() {
       target="_blank"
       rel="noreferrer"
       aria-label="Escribinos por WhatsApp"
-      className="md:hidden fixed bottom-4 right-4 z-50 bg-verde text-negro font-bold text-xs uppercase tracking-[0.12em] px-5 py-4 no-underline hover:bg-verde-hover"
+      className="md:hidden fixed bottom-4 right-4 z-50 bg-verde text-negro rounded-full shadow-verde font-bold text-xs uppercase tracking-[0.12em] px-6 py-4 no-underline hover:bg-verde-hover"
     >
       WhatsApp
     </a>

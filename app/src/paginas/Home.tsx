@@ -87,8 +87,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-negro-2 divisor">
-        <div className="max-w-[1200px] mx-auto px-5 py-5 flex flex-wrap gap-3.5 items-end">
+      {/* Panel flotante en vez de barra a todo el ancho: la franja llena de borde a
+          borde era lo que más marcaba el bloque rectangular en la portada. */}
+      <section className="divisor">
+        <div className="max-w-[1200px] mx-auto px-5 py-8">
+          <div className="bg-negro-2 border border-borde rounded-2xl shadow-carta p-5 flex flex-wrap gap-3.5 items-end">
           <div className="flex-1 min-w-[150px]">
             <Campo label="Marca">
               <Select value={marca} onChange={setMarca}>
@@ -113,9 +116,10 @@ export default function Home() {
               </Select>
             </Campo>
           </div>
-          <button type="button" onClick={buscar} className="btn-blanco border-0 cursor-pointer">
-            Buscar
-          </button>
+            <button type="button" onClick={buscar} className="btn-blanco border-0 cursor-pointer">
+              Buscar
+            </button>
+          </div>
         </div>
       </section>
 
@@ -143,9 +147,12 @@ export default function Home() {
       </section>
 
       <section className="bg-negro-2 border-y-2 border-borde">
-        <div className="max-w-[1200px] mx-auto px-5 py-12 grid gap-0.5 bg-borde [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))]">
+        <div className="max-w-[1200px] mx-auto px-5 py-12 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))]">
           {BENEFICIOS.map((b) => (
-            <div key={b.titulo} className="bg-negro-2 px-6 py-6 flex flex-col gap-2.5">
+            <div
+              key={b.titulo}
+              className="bg-negro-2 border border-borde rounded-2xl px-6 py-6 flex flex-col gap-2.5"
+            >
               <span className="text-verde text-2xl leading-none" aria-hidden="true">✓</span>
               <span className="titulo text-[22px] leading-[1.05] whitespace-pre-line">{b.titulo}</span>
               <span className="text-[13px] text-txt-3 leading-relaxed">{b.detalle}</span>
@@ -158,7 +165,10 @@ export default function Home() {
         <h2 className="titulo text-[clamp(30px,5vw,46px)] m-0 divisor pb-3.5">Nuestras sucursales</h2>
         <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
           {sucursales.map((s) => (
-            <div key={s.id} className="border border-borde bg-carta flex flex-col">
+            <div
+              key={s.id}
+              className="border border-borde bg-carta rounded-2xl shadow-carta overflow-hidden flex flex-col"
+            >
               <MapaSucursal sucursal={s} alto={220} />
               <div className="p-5 flex flex-col gap-2">
                 <span className="titulo text-2xl">{s.nombre}</span>

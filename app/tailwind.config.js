@@ -27,7 +27,26 @@ export default {
       },
       // Medios pasos usados en el layout (p-4.5, py-5.5): Tailwind no los trae por defecto.
       spacing: { 4.5: '1.125rem', 5.5: '1.375rem' },
-      borderRadius: { none: '0px', DEFAULT: '0px', md: '0px', lg: '0px', full: '0px' },
+      /* El proyecto nacía con radio 0 en todo. La escala vuelve a existir: superficies
+         grandes con esquinas amplias, campos intermedios y botones en píldora. */
+      borderRadius: {
+        none: '0px',
+        sm: '8px',
+        DEFAULT: '12px',
+        md: '14px',
+        lg: '18px',
+        xl: '22px',
+        '2xl': '28px',
+        '3xl': '34px',
+        full: '9999px',
+      },
+      /* Profundidad sobre negro: una sombra amplia y muy difusa separa las superficies
+         sin recurrir a bordes más claros, que sobre #0A0A0A se ven sucios. */
+      boxShadow: {
+        carta: '0 1px 2px rgba(0,0,0,.6), 0 18px 40px -20px rgba(0,0,0,.9)',
+        alzada: '0 1px 2px rgba(0,0,0,.6), 0 26px 56px -22px rgba(0,0,0,.95)',
+        verde: '0 10px 30px -12px rgba(70,224,45,.5)',
+      },
     },
   },
   plugins: [],

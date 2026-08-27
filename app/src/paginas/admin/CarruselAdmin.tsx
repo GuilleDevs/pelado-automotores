@@ -111,14 +111,14 @@ export default function CarruselAdmin() {
       </p>
 
       {error && (
-        <p className="text-sm border border-borde bg-carta px-4 py-3 m-0 text-reservado">{error}</p>
+        <p className="text-sm border border-borde rounded-xl bg-carta px-4 py-3 m-0 text-reservado">{error}</p>
       )}
 
       <div
         onDragOver={(e) => { e.preventDefault(); setSobre(true); }}
         onDragLeave={() => setSobre(false)}
         onDrop={(e) => { e.preventDefault(); setSobre(false); agregar(e.dataTransfer.files); }}
-        className={`border-2 border-dashed px-5 py-8 text-center ${
+        className={`border-2 border-dashed rounded-2xl px-5 py-8 text-center ${
           sobre ? 'border-verde bg-carta' : 'border-borde'
         }`}
       >
@@ -137,7 +137,7 @@ export default function CarruselAdmin() {
           como antes, sin ese bloque.
         </p>
       ) : (
-        <div className="flex flex-col gap-0.5 bg-borde border border-borde">
+        <div className="flex flex-col gap-3">
           {slides.map((s, n) => (
             <div
               key={s.id}
@@ -145,7 +145,7 @@ export default function CarruselAdmin() {
               onDragStart={() => { arrastrado.current = n; }}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => soltarEn(n)}
-              className="bg-negro-2 p-3 flex items-center gap-4 cursor-move"
+              className="bg-negro-2 border border-borde rounded-2xl p-3 flex items-center gap-4 cursor-move"
             >
               <span className="text-txt-5 text-xs font-bold w-6 shrink-0 text-center" aria-hidden="true">
                 ⠿
@@ -153,7 +153,7 @@ export default function CarruselAdmin() {
               <img
                 src={s.url}
                 alt=""
-                className="w-28 h-20 object-contain bg-surface border border-borde shrink-0"
+                className="w-28 h-20 object-contain bg-surface border border-borde rounded-lg shrink-0"
               />
               <label className="flex-1 min-w-0 flex flex-col gap-1.5">
                 <span className="label-campo">Texto debajo de la foto</span>

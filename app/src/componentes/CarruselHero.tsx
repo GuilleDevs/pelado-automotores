@@ -33,7 +33,7 @@ export default function CarruselHero({ slides }: Props) {
         if (e.key === 'ArrowRight') ir(i + 1);
       }}
     >
-      <div className="relative bg-surface border border-borde">
+      <div className="relative bg-surface border border-borde rounded-3xl overflow-hidden shadow-alzada">
         <img
           key={actual.id}
           src={actual.url}
@@ -50,7 +50,7 @@ export default function CarruselHero({ slides }: Props) {
               type="button"
               onClick={() => ir(i - 1)}
               aria-label="Auto anterior"
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-11 h-16 flex items-center justify-center bg-negro/70 text-blanco text-2xl leading-none hover:bg-verde hover:text-negro"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center bg-negro/70 backdrop-blur-sm border border-borde text-blanco text-2xl leading-none transition-colors hover:bg-verde hover:border-verde hover:text-negro"
             >
               ‹
             </button>
@@ -58,7 +58,7 @@ export default function CarruselHero({ slides }: Props) {
               type="button"
               onClick={() => ir(i + 1)}
               aria-label="Auto siguiente"
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-16 flex items-center justify-center bg-negro/70 text-blanco text-2xl leading-none hover:bg-verde hover:text-negro"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center bg-negro/70 backdrop-blur-sm border border-borde text-blanco text-2xl leading-none transition-colors hover:bg-verde hover:border-verde hover:text-negro"
             >
               ›
             </button>
@@ -86,7 +86,9 @@ export default function CarruselHero({ slides }: Props) {
               className="w-11 h-11 flex items-center justify-center"
             >
               <span
-                className={`block w-6 h-0.5 ${n === i ? 'bg-verde' : 'bg-borde'}`}
+                className={`block h-1.5 rounded-full transition-all duration-200 ${
+                  n === i ? 'w-7 bg-verde' : 'w-1.5 bg-borde'
+                }`}
               />
             </button>
           ))}

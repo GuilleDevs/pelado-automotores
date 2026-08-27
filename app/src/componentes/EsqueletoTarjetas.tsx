@@ -12,14 +12,17 @@ export default function EsqueletoTarjetas({ cantidad = 4 }: { cantidad?: number 
         className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(250px,1fr))]"
       >
         {Array.from({ length: cantidad }).map((_, i) => (
-          <div key={i} className="bg-carta border border-borde flex flex-col animate-pulse">
+          <div
+            key={i}
+            className="bg-carta border border-borde rounded-2xl shadow-carta overflow-hidden flex flex-col animate-pulse"
+          >
             <div className="aspect-[4/3] bg-surface" />
             <div className="p-4 pb-4.5 flex flex-col gap-3 flex-1">
-              <div className="h-[22px] bg-surface w-4/5" />
-              <div className="h-3 bg-surface w-3/5" />
+              <div className="h-[22px] bg-surface rounded-md w-4/5" />
+              <div className="h-3 bg-surface rounded-md w-3/5" />
               <div className="mt-auto flex flex-col gap-2.5">
-                <div className="h-10 bg-surface" />
-                <div className="h-4 bg-surface w-2/5" />
+                <div className="h-10 bg-surface rounded-xl" />
+                <div className="h-4 bg-surface rounded-full w-2/5" />
               </div>
             </div>
           </div>

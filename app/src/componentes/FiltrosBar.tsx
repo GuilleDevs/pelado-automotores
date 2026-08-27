@@ -17,7 +17,7 @@ export default function FiltrosBar({ filtros, onChange, marcas, sucursales, onLi
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid gap-3.5 bg-negro-2 border border-borde p-4.5 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">
+      <div className="grid gap-3.5 bg-negro-2 border border-borde rounded-2xl shadow-carta p-5 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">
         <Campo label="Marca">
           <Select value={filtros.marca} onChange={set('marca')}>
             <option value="">Todas</option>

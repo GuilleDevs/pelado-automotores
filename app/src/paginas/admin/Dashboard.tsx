@@ -53,14 +53,14 @@ export default function Dashboard() {
     >
       <Meta titulo="Panel — Pelado Automotores" descripcion="Gestión del catálogo." />
 
-      <div className="grid gap-0.5 bg-borde border border-borde [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">
+      <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">
         {[
           { valor: stats.publicados, label: 'Publicados', color: '#FFFFFF' },
           { valor: stats.disponibles, label: 'Disponibles', color: '#46E02D' },
           { valor: stats.reservados, label: 'Reservados', color: '#FFB01F' },
           { valor: sinLeer, label: 'Consultas nuevas', color: '#FFFFFF' },
         ].map((s) => (
-          <div key={s.label} className="bg-negro-2 p-5 flex flex-col gap-1">
+          <div key={s.label} className="bg-negro-2 border border-borde rounded-2xl p-5 flex flex-col gap-1">
             <span className="font-display font-bold text-4xl leading-none" style={{ color: s.color }}>
               {s.valor}
             </span>
@@ -76,7 +76,7 @@ export default function Dashboard() {
       ) : (
         <>
           {/* Escritorio: tabla. Mobile: tarjetas apiladas, no scroll horizontal. */}
-          <div className="hidden md:block border border-borde bg-negro-2">
+          <div className="hidden md:block border border-borde rounded-2xl overflow-hidden bg-negro-2">
             <div className="grid grid-cols-[2.2fr_1fr_1.1fr_1fr_0.9fr] gap-3 px-4.5 py-3.5 border-b-2 border-borde">
               {['Vehículo', 'Sucursal', 'Precio', 'Estado', 'Acciones'].map((h) => (
                 <span key={h} className="label-campo">{h}</span>
@@ -95,7 +95,7 @@ export default function Dashboard() {
                 </span>
                 <span className="text-sm text-blanco">{pesos(v.precio, v.moneda)}</span>
                 <select
-                  className="bg-negro text-blanco border border-borde px-2 py-2 text-xs"
+                  className="bg-negro text-blanco border border-borde rounded-lg px-2 py-2 text-xs"
                   value={v.estado}
                   onChange={(e) => cambiarEstado(v, e.target.value as EstadoVehiculo)}
                   aria-label={`Estado de ${titulo(v)}`}
@@ -123,7 +123,7 @@ export default function Dashboard() {
 
           <div className="md:hidden flex flex-col gap-3">
             {vehiculos.map((v) => (
-              <div key={v.id} className="border border-borde bg-negro-2 p-4 flex flex-col gap-3">
+              <div key={v.id} className="border border-borde rounded-2xl bg-negro-2 p-4 flex flex-col gap-3">
                 <div className="flex flex-col gap-1">
                   <span className="titulo text-lg">{titulo(v)}</span>
                   <span className="text-xs text-txt-3">

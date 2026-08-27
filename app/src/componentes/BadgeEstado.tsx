@@ -5,7 +5,7 @@ export default function BadgeEstado({ estado }: { estado: EstadoVehiculo }) {
   const c = COLOR_ESTADO[estado];
   return (
     <span
-      className="inline-block text-[10px] font-bold uppercase tracking-[0.14em] px-2.5 py-2 leading-none"
+      className="inline-block rounded-full text-[10px] font-bold uppercase tracking-[0.14em] px-3 py-2 leading-none"
       style={{ background: c.bg, color: c.fg }}
     >
       {ETIQUETA_ESTADO[estado]}

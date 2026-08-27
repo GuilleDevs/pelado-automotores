@@ -95,7 +95,7 @@ export default function Vehiculo() {
             </span>
           </div>
 
-          <div className="bg-blanco text-negro px-4.5 py-3.5 self-start flex flex-col gap-0.5">
+          <div className="bg-blanco text-negro rounded-2xl px-6 py-4 self-start flex flex-col gap-0.5">
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#5A5A5A]">Precio</span>
             <span className="font-display font-bold text-[clamp(32px,6vw,44px)] leading-none">
               {pesos(v.precio, v.moneda)}
@@ -118,10 +118,15 @@ export default function Vehiculo() {
       </div>
 
       <section>
-        <h2 className="titulo text-[28px] m-0 mb-3.5 divisor pb-3">Ficha técnica</h2>
-        <dl className="m-0">
+        <h2 className="titulo text-[28px] m-0 mb-3.5">Ficha técnica</h2>
+        {/* La lista suelta sobre el fondo se leía como una tabla pegada al borde de la
+            página; agrupada en superficie propia queda como un bloque de datos. */}
+        <dl className="m-0 bg-carta border border-borde rounded-2xl shadow-carta px-6 py-2">
           {specs.map(([k, val]) => (
-            <div key={k} className="flex justify-between gap-4 py-3.5 border-b border-borde-suave">
+            <div
+              key={k}
+              className="flex justify-between gap-4 py-3.5 border-b border-borde-suave last:border-0"
+            >
               <dt className="text-xs font-bold uppercase tracking-[0.14em] text-txt-4">{k}</dt>
               <dd className="m-0 text-[15px] text-blanco text-right">{val}</dd>
             </div>

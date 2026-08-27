@@ -14,7 +14,7 @@ export default function VehiculoCard({ vehiculo: v, sucursal, prioridad }: Props
   return (
     <Link
       to={`/vehiculo/${v.slug}`}
-      className="group bg-carta border border-borde flex flex-col no-underline transition-[border-color,transform] duration-150 hover:border-verde hover:-translate-y-0.5"
+      className="group bg-carta border border-borde rounded-2xl shadow-carta overflow-hidden flex flex-col no-underline transition-[border-color,transform,box-shadow] duration-200 hover:border-verde hover:-translate-y-1 hover:shadow-alzada motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       <div className="relative aspect-[4/3] bg-surface overflow-hidden">
         {foto ? (
@@ -31,7 +31,8 @@ export default function VehiculoCard({ vehiculo: v, sucursal, prioridad }: Props
             Sin foto
           </div>
         )}
-        <div className="absolute top-0 left-0 pointer-events-none">
+        {/* Separado del borde: pegado a la esquina, la curva de la tarjeta lo recortaba. */}
+        <div className="absolute top-3 left-3 pointer-events-none">
           <BadgeEstado estado={v.estado} />
         </div>
       </div>
@@ -45,14 +46,14 @@ export default function VehiculoCard({ vehiculo: v, sucursal, prioridad }: Props
           </span>
         </div>
         <div className="mt-auto flex flex-col gap-2.5">
-          <div className="bg-blanco text-negro px-3 py-2.5 font-display font-bold text-2xl leading-none">
+          <div className="bg-blanco text-negro rounded-xl px-4 py-2.5 font-display font-bold text-2xl leading-none">
             {pesos(v.precio, v.moneda)}
           </div>
           <div className="flex items-center justify-between gap-2.5">
             <span className="text-[11px] uppercase tracking-[0.1em] text-txt-3">
               {sucursal?.nombre ?? ''}
             </span>
-            <span className="bg-verde text-negro font-bold text-[11px] uppercase tracking-[0.12em] px-3.5 py-2.5 group-hover:bg-verde-hover">
+            <span className="bg-verde text-negro rounded-full font-bold text-[11px] uppercase tracking-[0.12em] px-4 py-2.5 transition-colors group-hover:bg-verde-hover">
               Contactar
             </span>
           </div>

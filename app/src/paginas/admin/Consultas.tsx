@@ -37,7 +37,7 @@ export default function Consultas() {
   return (
     <LayoutAdmin titulo="Consultas" kicker="Bandeja">
       {leads.length === 0 && (
-        <p className="border border-borde bg-negro-2 p-10 text-center text-txt-3 text-[15px] m-0">
+        <p className="border border-borde rounded-2xl bg-negro-2 p-10 text-center text-txt-3 text-[15px] m-0">
           Todavía no llegaron consultas por el formulario del sitio.
         </p>
       )}

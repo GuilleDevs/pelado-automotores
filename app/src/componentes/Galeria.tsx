@@ -19,7 +19,7 @@ export default function Galeria({ fotos, alt }: { fotos: Foto[]; alt: string }) 
 
   if (!ordenadas.length) {
     return (
-      <div className="aspect-[4/3] bg-surface border border-borde grid place-items-center text-txt-5 text-xs uppercase tracking-[0.14em]">
+      <div className="aspect-[4/3] bg-surface border border-borde rounded-2xl grid place-items-center text-txt-5 text-xs uppercase tracking-[0.14em]">
         Sin fotos
       </div>
     );
@@ -30,7 +30,7 @@ export default function Galeria({ fotos, alt }: { fotos: Foto[]; alt: string }) 
       <button
         type="button"
         onClick={() => setLightbox(true)}
-        className="relative aspect-[4/3] bg-surface border border-borde p-0 cursor-zoom-in block w-full"
+        className="relative aspect-[4/3] bg-surface border border-borde rounded-2xl overflow-hidden shadow-carta p-0 cursor-zoom-in block w-full"
         aria-label="Ampliar foto"
       >
         <img
@@ -50,8 +50,8 @@ export default function Galeria({ fotos, alt }: { fotos: Foto[]; alt: string }) 
               onClick={() => setActiva(i)}
               aria-label={`Ver foto ${i + 1}`}
               aria-current={i === activa}
-              className={`aspect-[4/3] bg-surface border p-0 cursor-pointer ${
-                i === activa ? 'border-verde' : 'border-borde'
+              className={`aspect-[4/3] bg-surface border rounded-xl overflow-hidden p-0 cursor-pointer transition-colors ${
+                i === activa ? 'border-verde' : 'border-borde hover:border-txt-5'
               }`}
             >
               <img
@@ -76,7 +76,7 @@ export default function Galeria({ fotos, alt }: { fotos: Foto[]; alt: string }) 
           <img
             src={ordenadas[activa].url}
             alt={`${alt} — foto ${activa + 1} ampliada`}
-            className="max-w-full max-h-[90vh] object-contain"
+            className="max-w-full max-h-[90vh] object-contain rounded-2xl"
           />
           <button
             type="button"
