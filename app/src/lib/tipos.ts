@@ -51,6 +51,18 @@ export interface Sucursal {
   orden: number;
 }
 
+/**
+ * Slide del carrusel del home. Es curado a mano y vive aparte del catálogo:
+ * las fotos del hero se recortan para ese espacio y no son las del vehículo.
+ */
+export interface SlideCarrusel {
+  id: string;
+  url: string;
+  path: string;
+  titulo: string;
+  orden: number;
+}
+
 export interface Lead {
   id: string;
   nombre: string;

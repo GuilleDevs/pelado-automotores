@@ -14,6 +14,7 @@ import Dashboard from './paginas/admin/Dashboard';
 import VehiculoEditar from './paginas/admin/VehiculoEditar';
 import SucursalesAdmin from './paginas/admin/SucursalesAdmin';
 import Consultas from './paginas/admin/Consultas';
+import CarruselAdmin from './paginas/admin/CarruselAdmin';
 import RutaProtegida from './componentes/admin/RutaProtegida';
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/admin/vehiculo/nuevo" element={<RutaProtegida><VehiculoEditar /></RutaProtegida>} />
           <Route path="/admin/vehiculo/:id" element={<RutaProtegida><VehiculoEditar /></RutaProtegida>} />
           <Route path="/admin/sucursales" element={<RutaProtegida><SucursalesAdmin /></RutaProtegida>} />
+          <Route path="/admin/carrusel" element={<RutaProtegida><CarruselAdmin /></RutaProtegida>} />
           <Route path="/admin/consultas" element={<RutaProtegida><Consultas /></RutaProtegida>} />
           <Route path="*" element={<NoEncontrado />} />
         </Routes>

@@ -37,10 +37,23 @@ export async function subirFoto(
   return { url: await getDownloadURL(r), path, orden };
 }
 
-export async function borrarFoto(foto: Foto) {
+/** Imagen del carrusel del home. Vive fuera de vehiculos/: no pertenece a ninguna ficha. */
+export async function subirImagenCarrusel(file: File): Promise<{ url: string; path: string }> {
+  const blob = await comprimir(file);
+  const path = `carrusel/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.webp`;
+  const r = ref(storage, path);
+  await uploadBytes(r, blob, { contentType: 'image/webp', cacheControl: 'public,max-age=31536000' });
+  return { url: await getDownloadURL(r), path };
+}
+
+export async function borrarArchivo(path: string) {
   try {
-    await deleteObject(ref(storage, foto.path));
+    await deleteObject(ref(storage, path));
   } catch {
     // Si el objeto ya no existe, seguimos: lo importante es sacarlo del documento.
   }
+}
+
+export async function borrarFoto(foto: Foto) {
+  await borrarArchivo(foto.path);
 }

@@ -5,6 +5,7 @@ import { salir } from '../../lib/useAdmin';
 const items = [
   { to: '/admin', label: 'Vehículos' },
   { to: '/admin/consultas', label: 'Consultas' },
+  { to: '/admin/carrusel', label: 'Carrusel' },
   { to: '/admin/sucursales', label: 'Sucursales' },
 ];
 

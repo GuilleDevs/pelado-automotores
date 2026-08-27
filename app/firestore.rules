@@ -19,6 +19,12 @@ service cloud.firestore {
       allow write: if esAdmin();
     }
 
+    match /carrusel/{id} {
+      // Curado a mano para el home: todo lo que existe se muestra, no hay borradores.
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
     match /leads/{id} {
       // El alta pasa por la Pages Function con service account, nunca desde el cliente.
       allow read, update, delete: if esAdmin();

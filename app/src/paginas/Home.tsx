@@ -1,14 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Meta from '../componentes/Meta';
 import VehiculoCard from '../componentes/VehiculoCard';
 import MapaSucursal from '../componentes/MapaSucursal';
 import Cargando from '../componentes/Cargando';
+import CarruselHero from '../componentes/CarruselHero';
 import { Campo, Select } from '../componentes/Campo';
 import { useCatalogo } from '../lib/useCatalogo';
 import { buscarSucursal } from '../lib/sucursales';
+import { listarSlides } from '../lib/carrusel';
 import { whatsappUrl } from '../lib/formato';
 import { BENEFICIOS, TELEFONO_VISIBLE, TRAMOS_PRECIO, WHATSAPP_PRINCIPAL } from '../lib/constantes';
+import type { SlideCarrusel } from '../lib/tipos';
 
 export default function Home() {
   const { vehiculos, sucursales, marcas, cargando } = useCatalogo();
@@ -17,10 +20,29 @@ export default function Home() {
   const [precioMax, setPrecioMax] = useState('');
   const [sucursalId, setSucursalId] = useState('');
 
+  const [slides, setSlides] = useState<SlideCarrusel[]>([]);
+
+  useEffect(() => {
+    // Si falla, el respaldo de abajo deja igual una foto en la portada.
+    listarSlides().then(setSlides).catch(() => setSlides([]));
+  }, []);
+
   const recientes = useMemo(
     () => vehiculos.filter((v) => v.estado !== 'vendido').slice(0, 4),
     [vehiculos],
   );
+
+  /**
+   * Mientras no carguen imágenes en el panel, el carrusel muestra el último auto del
+   * catálogo: sin esto la portada quedaría sin foto, peor que antes de tener carrusel.
+   */
+  const slidesVisibles = useMemo<SlideCarrusel[]>(() => {
+    if (slides.length) return slides;
+    const v = recientes[0];
+    const url = v?.fotos?.[0]?.url;
+    if (!v || !url) return [];
+    return [{ id: v.id, url, path: '', titulo: `${v.marca} ${v.modelo} ${v.anio}`, orden: 0 }];
+  }, [slides, recientes]);
 
   const buscar = () => {
     const q = new URLSearchParams();
@@ -39,8 +61,8 @@ export default function Home() {
       />
 
       <section className="divisor">
-        <div className="max-w-[1200px] mx-auto px-5 pt-11 grid gap-8 items-end [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
-          <div className="flex flex-col gap-5 pb-11">
+        <div className="max-w-[1200px] mx-auto px-5 pt-11 pb-11 flex flex-col gap-9">
+          <div className="flex flex-col gap-5">
             <span className="kicker">Valle de Uco · Mendoza</span>
             <h1 className="titulo text-[clamp(46px,9vw,96px)] leading-[0.94] m-0">
               Tu próximo<br />auto está <span className="text-verde">acá</span>
@@ -61,19 +83,7 @@ export default function Home() {
               <Link to="/catalogo" className="btn-linea no-underline">Ver catálogo</Link>
             </div>
           </div>
-          <div className="relative aspect-[4/3] bg-surface border border-borde min-h-[260px] self-stretch overflow-hidden">
-            {recientes[0] && (
-              <Link to={`/vehiculo/${recientes[0].slug}`}>
-                <img
-                  src={recientes[0].fotos?.[0]?.url}
-                  alt={`${recientes[0].marca} ${recientes[0].modelo} ${recientes[0].anio}`}
-                  width={1200}
-                  height={900}
-                  className="w-full h-full object-cover"
-                />
-              </Link>
-            )}
-          </div>
+          <CarruselHero slides={slidesVisibles} />
         </div>
       </section>
 
