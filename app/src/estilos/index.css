@@ -35,6 +35,9 @@
   .btn-blanco { @apply btn bg-blanco text-negro hover:bg-verde; }
   .btn-linea { @apply btn border-2 border-blanco text-blanco hover:border-verde hover:text-verde; }
   .divisor { @apply border-b-2 border-borde; }
-  /* Los mapas embebidos entran en el esquema oscuro con esta inversión. */
-  .mapa-oscuro { filter: grayscale(1) invert(0.92) hue-rotate(180deg); }
+  /* Los mapas embebidos entran en el esquema oscuro con esta inversión.
+     invert(1) y no 0.92: la inversión parcial comprimía el rango a 0.08-0.92 y
+     dejaba el mapa en grises lavados, sin negros ni blancos reales. El
+     hue-rotate que venía después no hacía nada: grayscale ya no deja tono. */
+  .mapa-oscuro { filter: grayscale(1) invert(1); }
 }
