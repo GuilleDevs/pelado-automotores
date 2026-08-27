@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { km, pesos, portada, titulo } from '../lib/formato';
+import { ficha, km, pesos, portada, titulo } from '../lib/formato';
 import BadgeEstado from './BadgeEstado';
 import type { Sucursal, Vehiculo } from '../lib/tipos';
 
@@ -41,7 +41,7 @@ export default function VehiculoCard({ vehiculo: v, sucursal, prioridad }: Props
             {titulo(v)}
           </h3>
           <span className="text-xs uppercase tracking-[0.06em] text-txt-3">
-            {v.anio} · {km(v.kilometraje)} · {v.combustible}
+            {ficha(v.anio, km(v.kilometraje), v.combustible)}
           </span>
         </div>
         <div className="mt-auto flex flex-col gap-2.5">

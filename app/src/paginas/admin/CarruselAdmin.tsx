@@ -37,8 +37,21 @@ export default function CarruselAdmin() {
         setSubiendo(lista.length - n - 1);
       }
       setSlides((s) => [...s, ...nuevos]);
-    } catch {
-      setError('No pudimos subir la imagen. Probá con un archivo más chico.');
+    } catch (e) {
+      // Sin el código real, cualquier fallo parecía de tamaño y mandaba a probar
+      // con un archivo más chico aunque el problema fueran los permisos.
+      const codigo = (e as { code?: string })?.code ?? '';
+      const detalle = codigo || (e as Error)?.message || 'error desconocido';
+      console.error('[carrusel] falló la subida:', e);
+      setError(
+        codigo === 'storage/unauthorized'
+          ? 'Storage rechazó la subida: el usuario no tiene permiso de escritura sobre carrusel/.'
+          : codigo === 'storage/unauthenticated'
+            ? 'Se cerró la sesión. Volvé a entrar al panel y probá de nuevo.'
+            : codigo === 'storage/retry-limit-exceeded'
+              ? 'La subida tardó demasiado. Revisá la conexión y probá de nuevo.'
+              : `No pudimos subir la imagen (${detalle}).`,
+      );
     } finally {
       setSubiendo(0);
     }

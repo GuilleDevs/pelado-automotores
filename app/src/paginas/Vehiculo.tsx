@@ -10,7 +10,7 @@ import { useCatalogo } from '../lib/useCatalogo';
 import { porSlug, relacionados } from '../lib/vehiculos';
 import { buscarSucursal } from '../lib/sucursales';
 import {
-  ETIQUETA_ESTADO, km, mensajeConsulta, pesos, portada, titulo, tituloCompleto, whatsappUrl,
+  ETIQUETA_ESTADO, ficha, km, mensajeConsulta, pesos, portada, titulo, tituloCompleto, whatsappUrl,
 } from '../lib/formato';
 import { WHATSAPP_PRINCIPAL } from '../lib/constantes';
 import type { Vehiculo as TVehiculo } from '../lib/tipos';
@@ -35,17 +35,20 @@ export default function Vehiculo() {
 
   const sucursal = buscarSucursal(sucursales, v.sucursalId);
   const numero = sucursal?.whatsapp || WHATSAPP_PRINCIPAL;
+  // Sin kilometraje la fila entera se omite: mostrarla vacía deja la ficha con un hueco.
+  const kms = km(v.kilometraje);
   const specs: Array<[string, string]> = [
     ['Marca', v.marca], ['Modelo', v.modelo], ['Año', String(v.anio)],
     ['Motor', v.motor], ['Combustible', v.combustible], ['Transmisión', v.transmision],
-    ['Kilometraje', km(v.kilometraje)], ['Color', v.color], ['Sucursal', sucursal?.nombre ?? '—'],
+    ...(kms ? [['Kilometraje', kms] as [string, string]] : []),
+    ['Color', v.color], ['Sucursal', sucursal?.nombre ?? '—'],
   ];
 
   return (
     <div className="max-w-[1200px] mx-auto px-5 pt-7 pb-16 flex flex-col gap-7">
       <Meta
         titulo={`${tituloCompleto(v)} — Pelado Automotores`}
-        descripcion={`${tituloCompleto(v)} · ${km(v.kilometraje)} · ${v.combustible} · ${pesos(v.precio, v.moneda)}. ${sucursal?.nombre ?? ''}. Financiación solo con DNI y cuotas fijas en pesos.`}
+        descripcion={`${ficha(tituloCompleto(v), kms, v.combustible, pesos(v.precio, v.moneda))}. ${sucursal?.nombre ?? ''}. Financiación solo con DNI y cuotas fijas en pesos.`}
         imagen={portada(v)}
         ruta={`/vehiculo/${v.slug}`}
         jsonLd={{
@@ -55,7 +58,10 @@ export default function Vehiculo() {
           brand: { '@type': 'Brand', name: v.marca },
           model: v.modelo,
           vehicleModelDate: String(v.anio),
-          mileageFromOdometer: { '@type': 'QuantitativeValue', value: v.kilometraje, unitCode: 'KMT' },
+          // Declarar 0 km en un usado sería un dato falso para Google: mejor no declararlo.
+          ...(v.kilometraje == null
+            ? {}
+            : { mileageFromOdometer: { '@type': 'QuantitativeValue', value: v.kilometraje, unitCode: 'KMT' } }),
           fuelType: v.combustible,
           vehicleTransmission: v.transmision,
           color: v.color,
@@ -85,7 +91,7 @@ export default function Vehiculo() {
             </span>
             <h1 className="titulo text-[clamp(32px,5.5vw,52px)] m-0 text-pretty">{titulo(v)}</h1>
             <span className="text-sm uppercase tracking-[0.08em] text-txt-3">
-              {v.anio} · {km(v.kilometraje)} · {v.combustible} · {v.transmision}
+              {ficha(v.anio, kms, v.combustible, v.transmision)}
             </span>
           </div>
 

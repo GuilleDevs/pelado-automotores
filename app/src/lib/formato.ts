@@ -3,7 +3,15 @@ import type { EstadoVehiculo, Vehiculo } from './tipos';
 export const pesos = (n: number, moneda: 'ARS' | 'USD' = 'ARS') =>
   (moneda === 'USD' ? 'U\$S ' : '$ ') + Math.round(n).toLocaleString('es-AR');
 
-export const km = (n: number) => n.toLocaleString('es-AR') + ' km';
+export const km = (n: number | null | undefined) =>
+  n == null ? null : n.toLocaleString('es-AR') + ' km';
+
+/**
+ * Une con · solo los datos que existen. Sin esto, un vehículo sin kilometraje
+ * se lee "2012 ·  · Nafta", con el separador colgando.
+ */
+export const ficha = (...partes: Array<string | number | null | undefined>) =>
+  partes.filter((p) => p !== null && p !== undefined && p !== '').join(' · ');
 
 export const titulo = (v: Pick<Vehiculo, 'marca' | 'modelo'>) => `${v.marca} ${v.modelo}`;
 

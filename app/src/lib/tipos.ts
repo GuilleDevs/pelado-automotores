@@ -28,7 +28,8 @@ export interface Vehiculo {
   motor: string;
   combustible: Combustible;
   transmision: Transmision;
-  kilometraje: number;
+  /** null cuando no se sabe: se omite en la ficha en vez de mostrar 0 km. */
+  kilometraje: number | null;
   color: string;
   descripcion: string;
   condiciones: Condiciones;
@@ -93,7 +94,7 @@ export const FILTROS_VACIOS: Filtros = {
 export const VEHICULO_NUEVO = {
   marca: '', modelo: '', anio: new Date().getFullYear(), precio: 0,
   moneda: 'ARS' as Moneda, sucursalId: '', motor: '', combustible: 'Nafta' as Combustible,
-  transmision: 'Manual' as Transmision, kilometraje: 0, color: '', descripcion: '',
+  transmision: 'Manual' as Transmision, kilometraje: null as number | null, color: '', descripcion: '',
   condiciones: { financiacionDni: true, cuotasFijas: true, permuta: true },
   estado: 'disponible' as EstadoVehiculo, publicado: false, fotos: [] as Foto[],
 };

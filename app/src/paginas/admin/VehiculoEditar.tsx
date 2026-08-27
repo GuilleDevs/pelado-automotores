@@ -7,7 +7,7 @@ import { Campo } from '../../componentes/Campo';
 import ChecksCondiciones from '../../componentes/ChecksCondiciones';
 import { actualizar, crear, porId } from '../../lib/vehiculos';
 import { listarSucursales } from '../../lib/sucursales';
-import { km, pesos, titulo } from '../../lib/formato';
+import { ficha, km, pesos, titulo } from '../../lib/formato';
 import { COMBUSTIBLES, ESTADOS, TRANSMISIONES } from '../../lib/constantes';
 import { VEHICULO_NUEVO, type Foto, type Sucursal, type Vehiculo } from '../../lib/tipos';
 
@@ -107,8 +107,15 @@ export default function VehiculoEditar() {
         <Campo label="Motor">
           <input className="input" value={datos.motor} onChange={(e) => set('motor', e.target.value)} placeholder="1.6" />
         </Campo>
-        <Campo label="Kilometraje">
-          <input className="input" type="number" value={datos.kilometraje} onChange={(e) => set('kilometraje', Number(e.target.value))} />
+        <Campo label="Kilometraje (opcional)">
+          <input
+            className="input"
+            type="number"
+            min="0"
+            placeholder="Dejar vacío si no se sabe"
+            value={datos.kilometraje ?? ''}
+            onChange={(e) => set('kilometraje', e.target.value === '' ? null : Number(e.target.value))}
+          />
         </Campo>
         <Campo label="Combustible">
           <select className="input" value={datos.combustible} onChange={(e) => set('combustible', e.target.value as Borrador['combustible'])}>
@@ -191,7 +198,7 @@ export default function VehiculoEditar() {
           <span className="label-campo">Así se va a ver la ficha</span>
           <h2 className="titulo text-[clamp(28px,5vw,44px)] m-0">{titulo(datos) || 'Marca Modelo'}</h2>
           <span className="text-sm uppercase tracking-[0.08em] text-txt-3">
-            {datos.anio} · {km(datos.kilometraje)} · {datos.combustible} · {datos.transmision}
+            {ficha(datos.anio, km(datos.kilometraje), datos.combustible, datos.transmision)}
           </span>
           <div className="bg-blanco text-negro px-4 py-3 self-start font-display font-bold text-4xl leading-none">
             {pesos(datos.precio, datos.moneda)}

@@ -41,18 +41,32 @@ const plantilla = await readFile(join(DIST, 'index.html'), 'utf8');
 
 for (const v of vehiculos) {
   const titulo = `${v.marca} ${v.modelo} ${v.anio} — Pelado Automotores`;
-  const desc = `${v.marca} ${v.modelo} ${v.anio} · ${v.kilometraje.toLocaleString('es-AR')} km · ${v.combustible} · ${pesos(v.precio, v.moneda)}. Financiación solo con DNI y cuotas fijas en pesos.`;
+  // El kilometraje es opcional: sin este filtro, un vehículo sin el dato rompía el
+  // prerender con "Cannot read properties of null" y se caía el build entero.
+  const partes = [
+    `${v.marca} ${v.modelo} ${v.anio}`,
+    v.kilometraje == null ? null : `${v.kilometraje.toLocaleString('es-AR')} km`,
+    v.combustible,
+    pesos(v.precio, v.moneda),
+  ].filter(Boolean);
+  const desc = `${partes.join(' · ')}. Financiación solo con DNI y cuotas fijas en pesos.`;
   const img = [...(v.fotos ?? [])].sort((a, b) => a.orden - b.orden)[0]?.url ?? `${SITIO}/og-default.jpg`;
   const url = `${SITIO}/vehiculo/${v.slug}`;
 
   const html = plantilla
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)}</title>`)
-    .replace(/<meta name="description"[\s\S]*?\/>/, `<meta name="description" content="${esc(desc)}" />`)
+    // \s+ y no un espacio: en index.html la etiqueta viene partida en varias líneas,
+    // así que el patrón viejo nunca coincidía y toda ficha quedaba con la descripción
+    // genérica del sitio.
+    .replace(/<meta\s+name="description"[\s\S]*?\/>/, `<meta name="description" content="${esc(desc)}" />`)
+    // Reemplazo y no agregado: index.html ya trae un og:image por defecto, y al sumar
+    // otro los scrapers se quedaban con el primero. Compartir un auto por WhatsApp
+    // mostraba la imagen genérica en lugar de la foto del vehículo.
+    .replace(/<meta\s+property="og:image"[\s\S]*?\/>/, `<meta property="og:image" content="${esc(img)}" />`)
     .replace(
       '</head>',
       `  <meta property="og:title" content="${esc(titulo)}" />
     <meta property="og:description" content="${esc(desc)}" />
-    <meta property="og:image" content="${esc(img)}" />
     <meta property="og:url" content="${esc(url)}" />
     <link rel="canonical" href="${esc(url)}" />
   </head>`,
