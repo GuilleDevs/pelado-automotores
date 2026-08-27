@@ -33,7 +33,10 @@ export default function CarruselHero({ slides }: Props) {
         if (e.key === 'ArrowRight') ir(i + 1);
       }}
     >
-      <div className="relative bg-surface border border-borde rounded-3xl overflow-hidden shadow-alzada">
+      {/* El ancho se limita solo en escritorio. A todo lo ancho, una foto parada
+          contenida deja medio cuadro en negro a los costados: achicar el alto no lo
+          arregla, porque la imagen la limita el alto y se achica con él. */}
+      <div className="relative bg-surface border border-borde rounded-3xl overflow-hidden shadow-alzada md:w-full md:max-w-[820px] md:mx-auto">
         <img
           key={actual.id}
           src={actual.url}
@@ -41,7 +44,7 @@ export default function CarruselHero({ slides }: Props) {
           width={1600}
           height={1000}
           fetchPriority="high"
-          className="w-full aspect-[4/3] md:aspect-[16/9] max-h-[70vh] object-contain"
+          className="w-full aspect-[4/3] md:aspect-[16/10] max-h-[70vh] md:max-h-[540px] object-contain"
         />
 
         {total > 1 && (
